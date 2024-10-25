@@ -19,24 +19,23 @@ import toast from "react-hot-toast";
 import AppTheme from "../../../shared-theme/AppTheme";
 import * as yup from "yup";
 import MenuItem from "@mui/material/MenuItem";
-import {Select, FormHelperText} from "@mui/material";
+import { Select, FormHelperText } from "@mui/material";
 import { useState, useEffect } from "react";
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import { Grid, Paper } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const validationSchema = yup.object({
-    earningFor: yup
-  .string('Select Earning for').required('Please select one'),
-  earning_type: yup
-  .string('select type').required('please select one'),
-  
+  earningFor: yup.string("Select Earning for").required("Please select one"),
+  earning_type: yup.string("select type").required("please select one"),
+
   investor: yup.array().when("earningFor", {
     is: (val) => val === "individual",
-    then: (schema) => yup.array().min(1, 'atleast one').required("* Please Select One."),
+    then: (schema) =>
+      yup.array().min(1, "atleast one").required("* Please Select One."),
     otherwise: (schema) => schema.min(0),
-}),
+  }),
   return_percentage: yup
     .string("Enter amount")
     .min(1, "Amount is atleast 1")
@@ -86,32 +85,31 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export default function Earning(props) {
-    const [investors, setInvestors] = useState([])
+  const [investors, setInvestors] = useState([]);
 
   useEffect(() => {
     axios
-  .get('http://localhost:3000/api/v1/users/all-investors', )
-  .then(function (response) {
-    setInvestors(response.data.data)
-  })
-  .catch(function (error) {
-    console.log(error);
-  })
-  .finally(function () {});
-}, [])
-
+      .get("http://localhost:3000/api/v1/users/all-investors")
+      .then(function (response) {
+        setInvestors(response.data.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {});
+  }, []);
 
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
-        earningFor: '',
-        earning_type: '',
+      earningFor: "",
+      earning_type: "",
       investor: [],
       return_percentage: "",
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-        console.log('values')
+      console.log("values");
       createInvestment(values);
     },
   });
@@ -155,83 +153,124 @@ export default function Earning(props) {
               gap: 2,
             }}
           >
-             <FormControl>
-      <FormLabel id="demo-radio-buttons-group-label">Manage Earning For</FormLabel>
-      <RadioGroup
-        aria-labelledby="demo-radio-buttons-group-label"
-        name="earningFor"
-        row
-        value={formik.values.earningFor}
-        onChange={formik.handleChange}
-      >
-        <FormControlLabel value="Accumulate" control={<Radio />} label="Accumulative" />
-        <FormControlLabel value="individual" control={<Radio />} label="Investors" />
-      </RadioGroup>
-      <FormHelperText sx={{ color: "#d32f2f"}}>
-                  {formik.touched.earningFor &&
-                    formik.errors.earningFor}
-                </FormHelperText>
-    </FormControl>
-            
-            { formik.values.earningFor === 'individual' && 
-                <FormControl fullWidth>
-                <FormLabel htmlFor="email">Investor</FormLabel>
-                <Select
-                  labelId="demo-multiple-name-label"
-                  id="demo-multiple-name"
-                  multiple
-                  name="investor"
-                  value={formik.values.investor}
-                  onChange={formik.handleChange}
-                  error={formik.touched.investor && Boolean(formik.errors.investor)}
-                  helperText={formik.touched.investor && formik.errors.investor}
-                >
-                  {investors.map((investor) => (
-                    <MenuItem key={investor._id} value={investor._id}>
-                      {investor.first_name + " " + investor.last_name}
-                    </MenuItem>
-                  ))}
-                </Select>
-                <FormHelperText sx={{ color: "#d32f2f" }}>
-                {formik.touched.investor && formik.errors.investor}
-              </FormHelperText>
-             
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <FormControl>
+                  <FormLabel id="demo-radio-buttons-group-label">
+                    Manage Earning For
+                  </FormLabel>
+                  <RadioGroup
+                    aria-labelledby="demo-radio-buttons-group-label"
+                    name="earningFor"
+                    row
+                    value={formik.values.earningFor}
+                    onChange={formik.handleChange}
+                  >
+                    <FormControlLabel
+                      value="Accumulate"
+                      control={<Radio />}
+                      label="Accumulative"
+                    />
+                    <FormControlLabel
+                      value="individual"
+                      control={<Radio />}
+                      label="Investors"
+                    />
+                  </RadioGroup>
+                  <FormHelperText sx={{ color: "#d32f2f" }}>
+                    {formik.touched.earningFor && formik.errors.earningFor}
+                  </FormHelperText>
                 </FormControl>
-            }
+              </Grid>
 
-<FormControl>
-      <FormLabel id="demo-radio-buttons-group-label">Earning Type</FormLabel>
-      <RadioGroup
-      row
-        aria-labelledby="demo-radio-buttons-group-label"
-        name="earning_type"
-        value={formik.values.earning_type}
-        onChange={formik.handleChange}
-      >
-        <FormControlLabel value="profit" control={<Radio />} label="Profit" />
-        <FormControlLabel value="loss" control={<Radio />} label="Loss" />
-      </RadioGroup>
-      <FormHelperText sx={{ color: "#d32f2f"}}>
-                  {formik.touched.earning_type &&
-                    formik.errors.earning_type}
-                </FormHelperText>
-    </FormControl>
-            
-            
-            <FormLabel>Return Percentage</FormLabel>
-            <TextField
-              fullWidth
-              id="last_name"
-              type="number"
-              name="return_percentage"
-              value={formik.values.return_percentage}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={
-                formik.touched.return_percentage && Boolean(formik.errors.return_percentage)
-              }
-              helperText={formik.touched.return_percentage && formik.errors.return_percentage}
-            />
+              <Grid item xs={12} sm={6}>
+                <FormControl>
+                  <FormLabel id="demo-radio-buttons-group-label">
+                    Earning Type
+                  </FormLabel>
+                  <RadioGroup
+                    row
+                    aria-labelledby="demo-radio-buttons-group-label"
+                    name="earning_type"
+                    value={formik.values.earning_type}
+                    onChange={formik.handleChange}
+                  >
+                    <FormControlLabel
+                      value="profit"
+                      control={<Radio />}
+                      label="Profit"
+                    />
+                    <FormControlLabel
+                      value="loss"
+                      control={<Radio />}
+                      label="Loss"
+                    />
+                  </RadioGroup>
+                  <FormHelperText sx={{ color: "#d32f2f" }}>
+                    {formik.touched.earning_type && formik.errors.earning_type}
+                  </FormHelperText>
+                </FormControl>
+              </Grid>
+            </Grid>
+
+          
+            <Box sx={{height:"90px"}}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                {formik.values.earningFor === "individual" && (
+                  <FormControl fullWidth>
+                    <FormLabel htmlFor="email">Investor</FormLabel>
+                    <Select
+                      labelId="demo-multiple-name-label"
+                      id="demo-multiple-name"
+                      multiple
+                      name="investor"
+                      value={formik.values.investor}
+                      onChange={formik.handleChange}
+                      error={
+                        formik.touched.investor &&
+                        Boolean(formik.errors.investor)
+                      }
+                      helperText={
+                        formik.touched.investor && formik.errors.investor
+                      }
+                    >
+                      {investors.map((investor) => (
+                        <MenuItem key={investor._id} value={investor._id}>
+                          {investor.first_name + " " + investor.last_name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    <FormHelperText sx={{ color: "#d32f2f" }}>
+                      {formik.touched.investor && formik.errors.investor}
+                    </FormHelperText>
+                  </FormControl>
+                )}
+              </Grid>
+            </Grid>
+            </Box>
+            <Grid container spacing={2} sx={{marginBottom:"30px"}}>
+              <Grid item xs={12}>
+                <FormLabel>Return Percentage</FormLabel>
+                <TextField
+                  fullWidth
+                  id="last_name"
+                  type="number"
+                  name="return_percentage"
+                  value={formik.values.return_percentage}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={
+                    formik.touched.return_percentage &&
+                    Boolean(formik.errors.return_percentage)
+                  }
+                  helperText={
+                    formik.touched.return_percentage &&
+                    formik.errors.return_percentage
+                  }
+                />
+              </Grid>
+            </Grid>
 
             <Button type="submit" fullWidth variant="contained">
               Manage Earning

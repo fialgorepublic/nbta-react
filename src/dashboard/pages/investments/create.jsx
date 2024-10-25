@@ -22,14 +22,15 @@ import ColorModeSelect from "../../../shared-theme/ColorModeSelect";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import {Select, FormHelperText} from "@mui/material";
+import { Select, FormHelperText } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const validationSchema = yup.object({
-  investor: yup.array()
-  .min(1, "atleast 1 employ")
-  .required("Provide at least one investor"),
+  investor: yup
+    .array()
+    .min(1, "atleast 1 employ")
+    .required("Provide at least one investor"),
   amount: yup
     .string("Enter amount")
     .min(1, "Amount is atleast 1")
@@ -78,19 +79,18 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export default function NewInvestment(props) {
-  const [investors, setInvestors] = useState([])
+  const [investors, setInvestors] = useState([]);
   useEffect(() => {
     axios
-  .get('http://localhost:3000/api/v1/users/all-investors', )
-  .then(function (response) {
-    setInvestors(response.data.data)
-  })
-  .catch(function (error) {
-    console.log(error);
-  })
-  .finally(function () {});
-}, [])
-
+      .get("http://localhost:3000/api/v1/users/all-investors")
+      .then(function (response) {
+        setInvestors(response.data.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {});
+  }, []);
 
   const navigate = useNavigate();
   const formik = useFormik({
@@ -100,7 +100,7 @@ export default function NewInvestment(props) {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-        console.log('values')
+      console.log("values");
       createInvestment(values);
     },
   });
@@ -145,27 +145,34 @@ export default function NewInvestment(props) {
             }}
           >
             <FormControl fullWidth>
-            <FormLabel htmlFor="email">Investor</FormLabel>
-            <Select
-              labelId="demo-multiple-name-label"
-              id="demo-multiple-name"
-              multiple
-              name="investor"
-              value={formik.values.investor}
-              onChange={formik.handleChange}
-              error={formik.touched.investor && Boolean(formik.errors.investor)}
-              helperText={formik.touched.investor && formik.errors.investor}
-            >
-              {investors.map((investor) => (
-                <MenuItem key={investor._id} value={investor._id}>
-                  {investor.first_name + " " + investor.last_name}
-                </MenuItem>
-              ))}
-            </Select>
-            <FormHelperText sx={{ color: "#d32f2f" }}>
-            {formik.touched.investor && formik.errors.investor}
-          </FormHelperText>
-            </FormControl>
+              <Box>
+                <FormLabel htmlFor="email" sx={{ display: "block" }}>
+                  Investor
+                </FormLabel>
+                <Select
+                  labelId="demo-multiple-name-label"
+                  id="demo-multiple-name"
+                  multiple
+                  name="investor"
+                  value={formik.values.investor}
+                  onChange={formik.handleChange}
+                  error={
+                    formik.touched.investor && Boolean(formik.errors.investor)
+                  }
+                  helperText={formik.touched.investor && formik.errors.investor}
+                  sx={{ width: "100%" }}
+                >
+                  {investors.map((investor) => (
+                    <MenuItem key={investor._id} value={investor._id}>
+                      {investor.first_name + " " + investor.last_name}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText sx={{ color: "#d32f2f" }}>
+                  {formik.touched.investor && formik.errors.investor}
+                </FormHelperText>
+              </Box>
+              <Box sx={{marginTop:"20px"}}>
             <FormLabel>Amount</FormLabel>
             <TextField
               fullWidth
@@ -175,15 +182,21 @@ export default function NewInvestment(props) {
               value={formik.values.amount}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={
-                formik.touched.amount && Boolean(formik.errors.amount)
-              }
+              error={formik.touched.amount && Boolean(formik.errors.amount)}
               helperText={formik.touched.amount && formik.errors.amount}
             />
+            </Box>
 
-            <Button type="submit" fullWidth variant="contained">
+            <Button type="submit" fullWidth variant="contained" sx={{marginTop:"50px"}}>
               Create Investment
             </Button>
+            
+            </FormControl>
+
+           
+           
+
+           
           </Box>
         </Card>
       </SignInContainer>

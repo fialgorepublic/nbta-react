@@ -40,18 +40,7 @@ export default function AllInvestors() {
             renderCell: (params) => (
               <>
               {/* <Link to={`${params.id}/edit-investor`} > */}
-              <Link to={`${params.id}/edit`}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="small"
-                  style={{ marginRight: 10 }}
-                  
-                >
-                  Edit
-                </Button>
-                </Link>
-                <span style={{ pointerEvents: params.row.kyc_status === 'NotStarted' ? 'none' : '' }}>
+              <span style={{ pointerEvents: params.row.kyc_status === 'NotStarted' ? 'none' : '' }}>
                 <Link to={`${params.id}/verify-kyc`}>
                 <Button
                   variant="contained"
@@ -64,6 +53,18 @@ export default function AllInvestors() {
                 </Button>
                 </Link>
                 </span>
+              <Link to={`${params.id}/edit`}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  style={{ marginRight: 10 }}
+                  
+                >
+                  Edit
+                </Button>
+                </Link>
+             
                 <Button
                   variant="contained"
                   color="error"
@@ -78,8 +79,8 @@ export default function AllInvestors() {
       ];
 
   return (
-    <Box sx={{ width: '90%', marginTop: '40px', maxWidth: { sm: '100%', md: '1700px' } }}>
-        <Stack direction="row" spacing={2} justifyContent="space-between">
+    <Box sx={{ width: '100%', marginTop: '40px', maxWidth: { sm: '100%', md: '1700px' } }}>
+        <Stack direction="row" spacing={2} alignItems={"center"} justifyContent="space-between">
       <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
         All Investors
       </Typography>

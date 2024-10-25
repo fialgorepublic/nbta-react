@@ -39,10 +39,10 @@ export default function SideMenu() {
         sx={{
           display: 'flex',
           mt: 'calc(var(--template-frame-height, 0px) + 4px)',
-          p: 1.5,
+          p: '30px 10px',
         }}
       >
-        <img src={logo} width={'200px'} style={{margin: 'auto'}}  />
+        <img src={logo} width={'130px'} style={{margin: 'auto'}}  />
       </Box>
       <Divider />
       <MenuContent />

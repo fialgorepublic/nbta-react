@@ -80,7 +80,7 @@ export default function AllInvestments() {
         },
       ];
   return (
-    <Box sx={{ width: '90%', marginTop: '40px', maxWidth: { sm: '100%', md: '1700px' } }}>
+    <Box sx={{ width: '100%', marginTop: '40px', maxWidth: { sm: '100%', md: '1700px' } }}>
         <Stack direction="row" spacing={2} justifyContent="space-between">
       <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
         All Investments

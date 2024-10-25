@@ -318,7 +318,7 @@ export const colorSchemes = {
 };
 
 export const typography = {
-  fontFamily: ["Montserrat Variable"].join(','),
+  fontFamily: ["Montserrat", "serif"].join(','),
   h1: {
     fontSize: defaultTheme.typography.pxToRem(48),
     fontWeight: 600,
