@@ -66,6 +66,11 @@ export default function AllInvestors() {
                 size="small"
                 style={{ marginRight: 10 }}
                 disabled={params.row.kyc_status === "NotStarted" ? true : false}
+                sx={{
+                  "&:hover": {
+                    backgroundColor: "#388e3c",
+                  },
+                }}
               >
                 Verify KYC
               </Button>
@@ -97,10 +102,9 @@ export default function AllInvestors() {
 
   return (
     <>
-
-<Helmet>
-<title>NBTA DX - Investors</title>
-</Helmet>
+      <Helmet>
+        <title>NBTA DX - Investors</title>
+      </Helmet>
       <CssBaseline enableColorScheme />
       <Box
         sx={{

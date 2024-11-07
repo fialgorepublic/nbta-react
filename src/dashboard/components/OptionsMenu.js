@@ -24,7 +24,7 @@ export default function OptionsMenu() {
   const navigate = useNavigate()
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const { userDetail } = useContext(UserContext);
+  const { userDetail , setUserDetail } = useContext(UserContext);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -37,6 +37,7 @@ export default function OptionsMenu() {
     localStorage.removeItem("token");
     navigate('/')
     toast.success('Logged out successfully')
+    setUserDetail(null); 
   }
   return (
     <>

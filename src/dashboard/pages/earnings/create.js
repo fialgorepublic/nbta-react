@@ -170,7 +170,7 @@ export default function Earning(props) {
                     </FormControl>
                   </Grid>
 
-                  <Grid item xs={12} sm={6} sx={{ marginTop: "10px" }}>
+                  <Grid item xs={12} sm={6}>
                     <FormControl>
                       <FormLabel id="demo-radio-buttons-group-label">
                         Earning Type
